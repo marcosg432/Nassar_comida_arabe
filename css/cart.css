@@ -1,0 +1,465 @@
+/* ============================================
+   Carrinho de Compras - Senna Doce
+   ============================================ */
+
+/* Botão flutuante para abrir carrinho */
+.carrinho-toggle {
+    position: fixed;
+    bottom: max(2rem, env(safe-area-inset-bottom, 0));
+    left: max(2rem, env(safe-area-inset-left, 0));
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--marrom);
+    color: var(--branco);
+    border: 1px solid rgba(198, 169, 105, 0.35);
+    cursor: pointer;
+    box-shadow: 0 10px 32px var(--sombra-media);
+    z-index: 998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform var(--transicao-rapida), box-shadow var(--transicao-rapida), background var(--transicao-rapida);
+}
+
+.carrinho-toggle:hover {
+    transform: translateY(-4px) scale(1.03);
+    background: var(--marrom-escuro);
+    box-shadow: 0 16px 40px var(--sombra-forte);
+}
+
+.carrinho-toggle svg {
+    width: 26px;
+    height: 26px;
+}
+
+.carrinho-toggle .carrinho-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 20px;
+    height: 20px;
+    background: #e74c3c;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Overlay */
+.carrinho-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.carrinho-overlay.ativo {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Sidebar do carrinho */
+.carrinho-sidebar {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    max-width: 460px;
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100dvh;
+    background: var(--branco);
+    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.15);
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    padding-top: env(safe-area-inset-top, 0);
+}
+
+.carrinho-sidebar.ativo {
+    right: 0;
+}
+
+/* Header do carrinho */
+.carrinho-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--bege-escuro);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--branco);
+}
+
+.carrinho-header h2 {
+    font-family: var(--fonte-titulo);
+    font-size: 1.5rem;
+    color: var(--marrom);
+    margin: 0;
+}
+
+.carrinho-close {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: var(--marrom);
+    font-size: 1.5rem;
+    line-height: 1;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.carrinho-close:hover {
+    background: var(--bege-escuro);
+}
+
+/* Corpo do carrinho - lista + form */
+.carrinho-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding: 1rem 1.5rem;
+}
+
+/* Lista de itens */
+#lista-carrinho {
+    list-style: none;
+    margin: 0 0 1.5rem 0;
+    padding: 0;
+}
+
+#lista-carrinho:empty::before {
+    content: 'Carrinho vazio';
+    display: block;
+    text-align: center;
+    color: var(--marrom);
+    opacity: 0.6;
+    padding: 2rem 0;
+}
+
+.carrinho-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--bege-escuro);
+}
+
+.carrinho-item:last-child {
+    border-bottom: none;
+}
+
+.carrinho-item-info {
+    flex: 1;
+    min-width: 0;
+}
+.carrinho-item-nome {
+    font-weight: 500;
+    color: var(--marrom);
+    font-size: 0.95rem;
+}
+.carrinho-item-preco-unit {
+    font-size: 0.75rem;
+    color: var(--marrom);
+    opacity: 0.7;
+    margin-top: 0.15rem;
+}
+
+.carrinho-item-controles {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.carrinho-item-qty {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: var(--bege);
+    border-radius: 8px;
+}
+
+.carrinho-item-qty button {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: var(--marrom);
+    font-size: 1.1rem;
+    line-height: 1;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.carrinho-item-qty button:hover {
+    background: var(--bege-escuro);
+}
+
+.carrinho-item-qty span {
+    min-width: 24px;
+    text-align: center;
+    font-weight: 600;
+    color: var(--marrom);
+}
+
+.carrinho-item-remove {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    color: #c0392b;
+    background: transparent;
+    border: 1px solid rgba(192, 57, 43, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.carrinho-item-remove:hover {
+    background: #e74c3c;
+    color: white;
+}
+
+.carrinho-item-subtotal {
+    font-weight: 600;
+    color: var(--dourado);
+    font-size: 0.95rem;
+    white-space: nowrap;
+}
+
+/* Total */
+.carrinho-total-wrap {
+    padding: 1rem 0;
+    border-top: 2px solid var(--dourado);
+    margin-top: 0.5rem;
+}
+
+.carrinho-total-wrap .total-label {
+    font-size: 0.9rem;
+    color: var(--marrom);
+    opacity: 0.8;
+}
+
+#total {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--marrom);
+}
+
+/* Formulário cliente / orçamento */
+.carrinho-form-section-title {
+    font-family: var(--fonte-titulo);
+    font-size: 1rem;
+    color: var(--marrom);
+    margin: 0.5rem 0 0.75rem 0;
+    padding-top: 0.5rem;
+    border-top: 1px dashed var(--bege-escuro);
+}
+
+.carrinho-form-section-title:first-of-type {
+    border-top: none;
+    padding-top: 0;
+}
+
+.carrinho-form {
+    padding-top: 1rem;
+    border-top: 1px solid var(--bege-escuro);
+}
+
+.carrinho-form label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--marrom);
+    margin-bottom: 0.35rem;
+}
+
+.carrinho-form input,
+.carrinho-form select,
+.carrinho-form textarea {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--bege-escuro);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+}
+
+.carrinho-form textarea {
+    min-height: 60px;
+    resize: vertical;
+}
+
+/* Botão finalizar */
+.carrinho-footer {
+    flex-shrink: 0;
+    padding: 1rem 1.5rem;
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0));
+    border-top: 1px solid var(--bege-escuro);
+    background: var(--branco);
+    box-shadow: 0 -6px 24px rgba(90, 62, 54, 0.06);
+}
+
+.btn-finalizar-pedido {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    min-height: 48px;
+    background: var(--dourado);
+    color: var(--marrom-escuro);
+    border: none;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 8px 28px rgba(198, 169, 105, 0.38);
+    transition: transform var(--transicao-rapida), box-shadow var(--transicao-rapida), background var(--transicao-rapida), color var(--transicao-rapida);
+}
+
+.btn-finalizar-pedido:hover:not(:disabled) {
+    transform: translateY(-2px);
+    background: var(--marrom);
+    color: var(--branco);
+    box-shadow: 0 12px 32px var(--sombra-media);
+}
+
+.btn-finalizar-pedido:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Botão Adicionar ao carrinho nos produtos */
+.btn-adicionar-carrinho {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0.62rem 1.2rem;
+    min-height: 44px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--branco);
+    background: var(--marrom);
+    border: 1px solid var(--marrom);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background var(--transicao-rapida), color var(--transicao-rapida), border-color var(--transicao-rapida), transform var(--transicao-rapida), box-shadow var(--transicao-rapida);
+    box-shadow: 0 6px 18px var(--sombra);
+}
+
+.btn-adicionar-carrinho:hover {
+    background: var(--dourado);
+    color: var(--marrom-escuro);
+    border-color: var(--dourado);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(198, 169, 105, 0.35);
+}
+
+@media (max-width: 768px) {
+    .carrinho-sidebar {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .carrinho-header {
+        padding: 1rem 1.15rem;
+        padding-left: max(1.15rem, env(safe-area-inset-left, 0));
+        padding-right: max(1.15rem, env(safe-area-inset-right, 0));
+    }
+
+    .carrinho-header h2 {
+        font-size: 1.35rem;
+    }
+
+    .carrinho-close {
+        min-width: 44px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .carrinho-body {
+        padding: 1rem max(1.15rem, env(safe-area-inset-left, 0)) 1.25rem max(1.15rem, env(safe-area-inset-right, 0));
+    }
+
+    .carrinho-footer {
+        padding-left: max(1.15rem, env(safe-area-inset-left, 0));
+        padding-right: max(1.15rem, env(safe-area-inset-right, 0));
+    }
+
+    .carrinho-form input,
+    .carrinho-form select,
+    .carrinho-form textarea {
+        min-height: 48px;
+        padding: 0.75rem 1rem;
+        font-size: 16px;
+    }
+
+    .carrinho-form textarea {
+        min-height: 88px;
+    }
+
+    .carrinho-item-qty button {
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    .carrinho-toggle {
+        bottom: calc(5.5rem + env(safe-area-inset-bottom, 0));
+        left: max(1rem, env(safe-area-inset-left, 0));
+    }
+}
+
+@media (max-width: 576px) {
+    .carrinho-header h2 {
+        font-size: 1.25rem;
+    }
+
+    #total {
+        font-size: 1.35rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .carrinho-sidebar {
+        max-width: 100%;
+    }
+
+    .carrinho-toggle {
+        bottom: calc(5.25rem + env(safe-area-inset-bottom, 0));
+        left: max(0.85rem, env(safe-area-inset-left, 0));
+        width: 52px;
+        height: 52px;
+    }
+
+    .carrinho-item {
+        flex-wrap: wrap;
+    }
+
+    .carrinho-item-subtotal {
+        width: 100%;
+        margin-top: 0.5rem;
+        text-align: right;
+    }
+
+    .carrinho-body {
+        padding-bottom: 1.5rem;
+    }
+}

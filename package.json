@@ -1,0 +1,15 @@
+{
+  "name": "nassar-comida-arabe",
+  "private": true,
+  "description": "Cardápio digital Nassar — site estático servido com serve + PM2",
+  "scripts": {
+    "start": "serve . -l 3009",
+    "serve": "serve . -l 3009"
+  },
+  "dependencies": {
+    "serve": "^14.2.4"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

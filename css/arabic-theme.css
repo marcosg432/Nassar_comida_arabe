@@ -1,0 +1,458 @@
+/**
+ * Tema restaurante árabe — Nassar
+ * Cores: bege, areia, marrom, verde oliva, dourado, branco
+ */
+
+:root {
+    --branco: #faf9f6;
+    --areia: #e6dcc8;
+    --bege: #f2ebe0;
+    --bege-profundo: #e3d6c4;
+    --texto: #2a231c;
+    --marrom: #4a3728;
+    --marrom-escuro: #2c2119;
+    --verde-oliva: #5c6654;
+    --verde-oliva-claro: #7a8470;
+    --dourado: #b8956b;
+    --dourado-escuro: #8f6f46;
+    --dourado-suave: #d4bc94;
+    --fundo: #f5f0e6;
+    --bege-escuro: #e0d4c2;
+    --rosa-claro: var(--bege);
+    --rosa-suave: var(--areia);
+    --sombra: rgba(44, 33, 25, 0.08);
+    --sombra-media: rgba(44, 33, 25, 0.12);
+    --sombra-forte: rgba(44, 33, 25, 0.18);
+    --radius-sm: 14px;
+    --radius-md: 20px;
+    --radius-lg: 28px;
+    --fonte-titulo: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+    --fonte-texto: "Outfit", "Poppins", system-ui, sans-serif;
+    --transicao: 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+    --transicao-rapida: 0.28s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.carrinho-header h2 {
+    font-family: var(--fonte-titulo);
+    color: var(--marrom-escuro);
+}
+
+.carrinho-form-section-title {
+    color: var(--verde-oliva);
+    font-weight: 600;
+}
+
+.btn-finalizar-pedido {
+    border-radius: var(--radius-md) !important;
+}
+
+#btn-finalizar-delivery {
+    background: linear-gradient(145deg, #1fa463 0%, #128c7e 100%) !important;
+    color: var(--branco) !important;
+    box-shadow: 0 10px 28px rgba(18, 140, 126, 0.35) !important;
+}
+
+body {
+    font-family: var(--fonte-texto);
+    color: var(--texto);
+    background-color: var(--fundo);
+    background-image:
+        radial-gradient(ellipse 120% 80% at 100% 0%, rgba(184, 149, 107, 0.08), transparent 50%),
+        radial-gradient(ellipse 100% 60% at 0% 100%, rgba(92, 102, 84, 0.06), transparent 45%);
+}
+
+/* Header */
+.header {
+    background: rgba(250, 249, 246, 0.92);
+    border-bottom: 1px solid rgba(74, 55, 40, 0.12);
+    box-shadow: 0 4px 24px var(--sombra);
+}
+
+.logo {
+    font-family: var(--fonte-titulo);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--marrom-escuro);
+}
+
+.nav-menu a:hover,
+.nav-menu a:focus {
+    color: var(--verde-oliva);
+}
+
+.nav-dropdown-trigger {
+    color: var(--marrom);
+}
+
+.btn-primary,
+.hero-buttons .btn-primary {
+    background: linear-gradient(145deg, var(--dourado) 0%, var(--dourado-escuro) 100%);
+    color: var(--branco);
+    border: none;
+    border-radius: var(--radius-md);
+    box-shadow: 0 10px 32px rgba(143, 111, 70, 0.28);
+    letter-spacing: 0.06em;
+    font-weight: 600;
+}
+
+.btn-primary:hover,
+.hero-buttons .btn-primary:hover {
+    background: linear-gradient(145deg, var(--marrom) 0%, var(--marrom-escuro) 100%);
+    color: var(--branco);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    border: 2px solid var(--verde-oliva);
+    color: var(--verde-oliva);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.6);
+    font-weight: 600;
+}
+
+.btn-secondary:hover {
+    background: var(--verde-oliva);
+    color: var(--branco);
+    border-color: var(--verde-oliva);
+}
+
+/* Hero home */
+.hero-overlay {
+    background: linear-gradient(
+        to bottom,
+        rgba(44, 33, 25, 0.45) 0%,
+        rgba(44, 33, 25, 0.65) 100%
+    );
+}
+
+.hero-title {
+    font-family: var(--fonte-titulo);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.35);
+}
+
+.hero-eyebrow {
+    color: var(--dourado-suave);
+    letter-spacing: 0.12em;
+}
+
+.hero-eyebrow::after {
+    background: var(--dourado);
+}
+
+.section-title {
+    font-family: var(--fonte-titulo);
+    color: var(--marrom-escuro);
+    font-weight: 600;
+}
+
+.section-subtitle {
+    color: var(--verde-oliva);
+    opacity: 0.9;
+}
+
+/* Cards categoria */
+.categoria-card {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 12px 40px var(--sombra-media);
+    border: 1px solid rgba(74, 55, 40, 0.1);
+    background: var(--branco);
+}
+
+.categoria-card:hover {
+    box-shadow: 0 20px 48px var(--sombra-forte);
+    transform: translateY(-4px);
+}
+
+.categoria-img {
+    border-radius: 0;
+}
+
+.categoria-content h3 {
+    font-family: var(--fonte-titulo);
+    color: var(--marrom-escuro);
+}
+
+/* Produtos */
+.produto-card {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: 0 10px 36px var(--sombra-media);
+    border: 1px solid rgba(74, 55, 40, 0.08);
+    background: var(--branco);
+}
+
+.produto-card:hover {
+    box-shadow: 0 16px 44px var(--sombra-forte);
+}
+
+.produto-img {
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.produto-content h3 {
+    font-family: var(--fonte-titulo);
+    color: var(--marrom-escuro);
+    font-weight: 600;
+}
+
+.produto-preco {
+    color: var(--verde-oliva);
+    font-weight: 600;
+}
+
+.menu-section-title {
+    font-family: var(--fonte-titulo);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    color: var(--marrom-escuro);
+    margin: 2.5rem 0 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--dourado-suave);
+    font-weight: 600;
+}
+
+.menu-section-title:first-of-type {
+    margin-top: 0;
+}
+
+/* Page hero interno com foto */
+.page-hero.page-hero--banner {
+    position: relative;
+    min-height: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3.5rem 1.5rem !important;
+    background-color: var(--marrom-escuro);
+    background-size: cover;
+    background-position: center;
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    margin-bottom: 2rem;
+    overflow: hidden;
+}
+
+.page-hero.page-hero--banner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        165deg,
+        rgba(44, 33, 25, 0.55) 0%,
+        rgba(74, 55, 40, 0.75) 100%
+    );
+    z-index: 0;
+}
+
+.page-hero.page-hero--banner h1,
+.page-hero.page-hero--banner p {
+    position: relative;
+    z-index: 1;
+    color: var(--branco);
+    max-width: 640px;
+}
+
+.page-hero.page-hero--banner h1 {
+    font-family: var(--fonte-titulo);
+    font-size: clamp(1.85rem, 4vw, 2.75rem);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
+}
+
+.page-hero.page-hero--banner p {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    opacity: 0.95;
+}
+
+/* Bloco institucional */
+.arabic-about {
+    position: relative;
+    padding: 4rem 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.arabic-about::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--about-bg, none);
+    background-size: cover;
+    background-position: center;
+    opacity: 0.22;
+    z-index: 0;
+}
+
+.arabic-about .container {
+    position: relative;
+    z-index: 1;
+}
+
+.arabic-about .section-head {
+    background: rgba(250, 249, 246, 0.92);
+    padding: 2rem 2.5rem;
+    border-radius: var(--radius-md);
+    box-shadow: 0 12px 40px var(--sombra);
+    max-width: 720px;
+    margin: 0 auto;
+    border: 1px solid rgba(74, 55, 40, 0.1);
+}
+
+/* Footer */
+.footer {
+    background: linear-gradient(180deg, var(--marrom-escuro) 0%, #1a1410 100%);
+    color: var(--bege);
+    border-top: 3px solid var(--dourado);
+}
+
+.footer-brand h3 {
+    font-family: var(--fonte-titulo);
+    color: var(--dourado-suave);
+}
+
+.footer-nav a:hover,
+.footer-links a:hover {
+    color: var(--dourado-suave);
+}
+
+.footer-bottom {
+    border-top-color: rgba(212, 188, 148, 0.2);
+}
+
+/* Botões produto / carrinho */
+.btn-adicionar-carrinho {
+    background: var(--verde-oliva);
+    border-radius: var(--radius-sm);
+    color: var(--branco);
+    font-weight: 600;
+}
+
+.btn-adicionar-carrinho:hover {
+    background: var(--marrom);
+}
+
+.btn-saiba-mais {
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--bege-escuro);
+}
+
+/* WhatsApp flutuante */
+.whatsapp-float {
+    background: linear-gradient(145deg, #128c7e 0%, #075e54 100%);
+    border-radius: 999px;
+    box-shadow: 0 8px 28px rgba(7, 94, 84, 0.35);
+}
+
+.nav-whatsapp {
+    color: var(--verde-oliva) !important;
+    font-weight: 600;
+}
+
+/* Scroll top */
+.scroll-to-top {
+    background: var(--marrom);
+    border-color: var(--dourado);
+}
+
+/* Modal produto */
+.modal-produto {
+    border-radius: var(--radius-lg);
+    box-shadow: 0 24px 64px var(--sombra-forte);
+}
+
+.modal-produto-nome {
+    font-family: var(--fonte-titulo);
+    color: var(--marrom-escuro);
+}
+
+/* Card evento personalizado */
+.evento-cta-card {
+    border-radius: var(--radius-md);
+    box-shadow: 0 12px 40px var(--sombra-media);
+    border: 1px solid rgba(74, 55, 40, 0.12);
+    background: var(--branco);
+    padding: 2rem;
+    max-width: 640px;
+    margin: 2.5rem auto 0;
+}
+
+.evento-cta-card h3 {
+    font-family: var(--fonte-titulo);
+    color: var(--marrom-escuro);
+    margin-top: 0;
+}
+
+.descricao-produto {
+    font-size: 0.9rem;
+    color: #5a5048;
+    line-height: 1.5;
+    margin: 0.35rem 0 0.75rem;
+}
+
+/* Logo Nassar — visibilidade alta */
+.logo.logo--img {
+    display: inline-flex;
+    align-items: center;
+    line-height: 0;
+    padding: 0.2rem 0;
+}
+
+.logo.logo--img:hover {
+    opacity: 0.94;
+}
+
+.logo-img-header {
+    height: clamp(5rem, 14vw, 7.75rem);
+    width: auto;
+    max-width: min(78vw, 420px);
+    object-fit: contain;
+    object-position: left center;
+}
+
+.hero-brand {
+    margin: 0 auto 1.25rem;
+    text-align: center;
+}
+
+.hero-logo-img {
+    width: min(96vw, 620px);
+    max-height: clamp(8.5rem, 26vw, 13.5rem);
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    filter: drop-shadow(0 10px 36px rgba(0, 0, 0, 0.5));
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Hero interno (delivery/eventos): marca visível */
+.page-hero-brand {
+    margin-bottom: 0.75rem;
+}
+
+.page-hero-logo {
+    height: clamp(4.25rem, 12vw, 6.5rem);
+    width: auto;
+    max-width: min(88vw, 380px);
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.45));
+}

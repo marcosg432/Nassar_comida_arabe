@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Admin — Nassar</title>
+    <link rel="icon" href="../../assets/img/logo-nassar.png" type="image/png">
+    <link rel="stylesheet" href="../../css/admin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="admin-body">
+    <header class="admin-bar">
+        <span class="admin-bar-brand">
+            <a href="../../index.html" title="Ir ao site"><img src="../../assets/img/logo-nassar.png" alt="" class="admin-logo-img" width="280" height="84" decoding="async"></a>
+            <span><strong>Dashboard</strong></span>
+        </span>
+        <span>
+            <a href="../index.html">Orçamentos</a>
+            <span style="opacity:0.6"> · </span>
+            <a href="../../index.html">Site</a>
+        </span>
+    </header>
+
+    <div class="admin-wrap">
+        <div id="dashboard-login-msg" class="admin-card" hidden>
+            <p>Faça login em <a href="../index.html">Orçamentos</a> primeiro.</p>
+        </div>
+
+        <div id="dashboard-conteudo" hidden>
+            <div class="dashboard-cards" id="dashboard-cards"></div>
+
+            <div class="dashboard-chart">
+                <h2>Orçamentos por status</h2>
+                <div class="chart-bars" id="chart-bars"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../js/config.js"></script>
+    <script src="../../js/orcamentos-logic.js"></script>
+    <script src="../../js/orcamentos-compat.js"></script>
+    <script src="../../js/orcamentos-storage.js"></script>
+    <script src="../../js/admin-common.js"></script>
+    <script>
+        (function () {
+            var coresBarra = {
+                novo_orcamento: "#9e9e9e",
+                aguardando_resposta: "#1976d2",
+                aprovado: "#f57c00",
+                em_producao: "#f9a825",
+                finalizado: "#388e3c",
+                perdido: "#c62828"
+            };
+
+            function fmt(n) {
+                return formatarMoeda(n);
+            }
+
+            function render() {
+                if (!adminEstaAutenticado()) {
+                    document.getElementById("dashboard-login-msg").hidden = false;
+                    return;
+                }
+                document.getElementById("dashboard-conteudo").hidden = false;
+                var lista = listarOrcamentosAdmin();
+                var total = lista.length;
+
+                var aguardando = 0;
+                var aprovados = 0;
+                var emProd = 0;
+                var finalizados = 0;
+                var perdidos = 0;
+                var valorPropostas = 0;
+                var valorFinalizado = 0;
+                var porStatus = {};
+
+                lista.forEach(function (o) {
+                    var k = statusNormalizado(o);
+                    porStatus[k] = (porStatus[k] || 0) + 1;
+                    if (k === "aguardando_resposta") aguardando++;
+                    if (k === "aprovado") aprovados++;
+                    if (k === "em_producao") emProd++;
+                    if (k === "finalizado") finalizados++;
+                    if (k === "perdido") perdidos++;
+                    var vf = valorFinalOrc(o);
+                    if (k !== "perdido" && k !== "finalizado") valorPropostas += vf;
+                    if (k === "finalizado") valorFinalizado += vf;
+                });
+
+                var cards = document.getElementById("dashboard-cards");
+                cards.innerHTML =
+                    cardHtml("Orçamentos (eventos)", String(total)) +
+                    cardHtml("Aguardando resposta", String(aguardando)) +
+                    cardHtml("Aprovados", String(aprovados)) +
+                    cardHtml("Em produção", String(emProd)) +
+                    cardHtml("Finalizados", String(finalizados)) +
+                    cardHtml("Perdidos", String(perdidos)) +
+                    cardHtml("Valor em aberto (não finalizado)", fmt(valorPropostas)) +
+                    cardHtml("Valor total finalizado", fmt(valorFinalizado));
+
+                var keys = Object.keys(CONFIG.STATUS_LABELS || {});
+                var maxC = Math.max.apply(null, keys.map(function (key) {
+                    return porStatus[key] || 0;
+                }).concat([1]));
+
+                var chart = document.getElementById("chart-bars");
+                chart.innerHTML = "";
+                keys.forEach(function (key) {
+                    var n = porStatus[key] || 0;
+                    var pct = Math.round((n / maxC) * 100);
+                    var row = document.createElement("div");
+                    row.className = "chart-row";
+                    row.innerHTML =
+                        "<span class=\"rotulo\">" + escapeHtml(CONFIG.STATUS_LABELS[key]) + "</span>" +
+                        "<div class=\"bar-wrap\"><div class=\"bar-fill\" style=\"width:" + pct + "%;background:" + (coresBarra[key] || "#999") + "\"></div></div>" +
+                        "<span class=\"num\">" + n + "</span>";
+                    chart.appendChild(row);
+                });
+            }
+
+            function cardHtml(titulo, valor) {
+                return "<div class=\"dashboard-card\"><h3>" + escapeHtml(titulo) + "</h3><div class=\"valor\">" + escapeHtml(valor) + "</div></div>";
+            }
+
+            function escapeHtml(s) {
+                var d = document.createElement("div");
+                d.textContent = String(s);
+                return d.innerHTML;
+            }
+
+            document.addEventListener("DOMContentLoaded", render);
+        })();
+    </script>
+</body>
+</html>
