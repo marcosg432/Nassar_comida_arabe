@@ -19,19 +19,19 @@
         <input type="password" id="admin-senha" placeholder="Senha" autocomplete="current-password">
         <button type="button" class="admin-btn" id="btn-entrar" style="width:100%">Entrar</button>
         <p id="login-erro" style="color:#c0392b;display:none;margin-top:0.75rem">Senha incorreta.</p>
-        <p style="margin-top:1rem"><a href="../index.html">← Voltar ao site</a></p>
+        <p style="margin-top:1rem"><a href="/index.html">← Voltar ao site</a></p>
     </div>
 
     <div id="admin-main" hidden>
         <header class="admin-bar">
             <span class="admin-bar-brand">
-                <a href="../index.html" title="Ir ao site"><img src="../assets/img/logo-nassar.png" alt="" class="admin-logo-img" width="280" height="84" decoding="async"></a>
+                <a href="/index.html" title="Ir ao site"><img src="../assets/img/logo-nassar.png" alt="" class="admin-logo-img" width="280" height="84" decoding="async"></a>
                 <span id="admin-titulo-empresa"><strong>Orçamentos</strong></span>
             </span>
             <span>
-                <a href="dashboard/index.html">Dashboard</a>
+                <a href="/admin/dashboard/index.html">Dashboard</a>
                 <span style="opacity:0.6"> · </span>
-                <a href="../index.html">Site</a>
+                <a href="/index.html">Site</a>
                 <span style="opacity:0.6"> · </span>
                 <button type="button" class="admin-btn admin-btn-sec" id="btn-sair">Sair</button>
             </span>
@@ -113,7 +113,7 @@
                         '<td>' + formatarMoeda(dr) + '</td>' +
                         '<td><strong>' + formatarMoeda(vFin) + '</strong></td>' +
                         '<td><span class="' + badgeClass + '">' + escapeCell(label) + '</span></td>' +
-                        '<td><a class="admin-btn" href="orcamento.html?id=' + encodeURIComponent(o.id) + '">Ver detalhes</a></td>';
+                        '<td><a class="admin-btn" href="/admin/orcamento.html?id=' + encodeURIComponent(o.id) + '">Ver detalhes</a></td>';
                     tbody.appendChild(tr);
                 });
             }
