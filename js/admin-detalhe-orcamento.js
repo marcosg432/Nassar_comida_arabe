@@ -2,9 +2,45 @@
  * Detalhe do orçamento (admin): desconto, degustação, pagamento, WhatsApp, PDF proposta
  */
 (function () {
+    var STORAGE_ID_KEY = "nassar_admin_orcamento_id";
+
     function getQueryId() {
         var params = new URLSearchParams(window.location.search);
-        return params.get("id");
+        var id = params.get("id");
+        if (id) return id;
+
+        if (window.location.hash && window.location.hash.length > 1) {
+            var h = window.location.hash.slice(1);
+            if (h.indexOf("id=") === 0) {
+                id = decodeURIComponent(h.slice(3).split("&")[0] || "");
+                if (id) return id;
+            }
+            var hp = new URLSearchParams(h);
+            id = hp.get("id");
+            if (id) return id;
+            if (/^\d+$/.test(h)) return h;
+        }
+
+        try {
+            id = sessionStorage.getItem(STORAGE_ID_KEY);
+            if (id) return id;
+        } catch (e) {}
+
+        return null;
+    }
+
+    function normalizarUrlDetalheOrcamento(id) {
+        if (!id) return;
+        try {
+            var u = new URL(window.location.href);
+            u.searchParams.set("id", String(id));
+            u.hash = "";
+            var p = u.pathname.replace(/\/$/, "");
+            if (p === "/admin/orcamento" || p.endsWith("/orcamento")) {
+                u.pathname = "/admin/orcamento.html";
+            }
+            history.replaceState(null, "", u.pathname + "?" + u.searchParams.toString());
+        } catch (e) {}
     }
 
     function preencherStatusSelect(select, valorAtual) {
@@ -187,6 +223,11 @@
             document.getElementById("admin-detalhe-conteudo").hidden = true;
             return;
         }
+
+        try {
+            sessionStorage.removeItem(STORAGE_ID_KEY);
+        } catch (e) {}
+        normalizarUrlDetalheOrcamento(id);
 
         var o = getOrcamentoPorId(id);
         if (!o) {

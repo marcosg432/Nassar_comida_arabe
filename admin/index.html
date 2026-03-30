@@ -113,7 +113,7 @@
                         '<td>' + formatarMoeda(dr) + '</td>' +
                         '<td><strong>' + formatarMoeda(vFin) + '</strong></td>' +
                         '<td><span class="' + badgeClass + '">' + escapeCell(label) + '</span></td>' +
-                        '<td><a class="admin-btn" href="/admin/orcamento.html?id=' + encodeURIComponent(o.id) + '">Ver detalhes</a></td>';
+                        '<td><a class="admin-btn admin-orc-detalhe" data-orc-id="' + String(o.id).replace(/"/g, '&quot;') + '" href="/admin/orcamento.html?id=' + encodeURIComponent(o.id) + '#id=' + encodeURIComponent(o.id) + '">Ver detalhes</a></td>';
                     tbody.appendChild(tr);
                 });
             }
@@ -140,6 +140,17 @@
                 adminLogout();
                 main.hidden = true;
                 loginBox.hidden = false;
+            });
+
+            document.getElementById('tabela-orcamentos').addEventListener('click', function (e) {
+                var a = e.target.closest('a.admin-orc-detalhe');
+                if (!a) return;
+                var rid = a.getAttribute('data-orc-id');
+                if (rid) {
+                    try {
+                        sessionStorage.setItem('nassar_admin_orcamento_id', rid);
+                    } catch (err) {}
+                }
             });
 
             if (adminEstaAutenticado()) {
