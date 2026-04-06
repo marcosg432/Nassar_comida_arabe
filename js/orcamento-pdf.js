@@ -85,6 +85,11 @@ function gerarOrcamentoPropostaPDF(orcamento) {
     if ((vDesc == null || vDesc === "") && typeof descontoEquivalenteEmReais === "function") {
         vDesc = descontoEquivalenteEmReais(vo, tipoD, valD);
     }
+    var posDesc =
+        tipoD && typeof calcularValorFinalComDesconto === "function"
+            ? calcularValorFinalComDesconto(vo, tipoD, valD)
+            : vo;
+    var taxaE = Math.max(0, Number(orcamento.taxa_entrega) || 0);
     var vf = valorFinalOrc(orcamento);
 
     y += 2;
@@ -93,6 +98,10 @@ function gerarOrcamentoPropostaPDF(orcamento) {
     doc.setFontSize(10);
     linha("Valor original: " + formatarMoedaOrcPdf(vo), 6);
     linha("Desconto: " + formatarMoedaOrcPdf(Number(vDesc) || 0), 6);
+    linha("Subtotal apos desconto: " + formatarMoedaOrcPdf(posDesc), 6);
+    if (taxaE > 0) {
+        linha("Taxa de entrega: " + formatarMoedaOrcPdf(taxaE), 6);
+    }
     doc.setFontSize(11);
     linha("VALOR FINAL: " + formatarMoedaOrcPdf(vf), 7);
 
@@ -111,11 +120,6 @@ function gerarOrcamentoPropostaPDF(orcamento) {
         linha("Data pagamento final: " + orcamento.data_pagamento_final, 6);
     }
     linha("Observacoes: " + (orcamento.observacoes || "-"), 6);
-
-    if (orcamento.degustacao_data || orcamento.degustacao_obs) {
-        y += 2;
-        linha("Degustacao: " + (orcamento.degustacao_data || "") + " " + (orcamento.degustacao_hora || "") + " — " + (orcamento.degustacao_obs || ""), 6);
-    }
 
     doc.save("orcamento-" + (orcamento.id || "doc") + ".pdf");
 }

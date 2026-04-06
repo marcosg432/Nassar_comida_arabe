@@ -62,6 +62,10 @@ function gerarContratoPDF(orcamento) {
                     : formatarMoedaPdf(orcamento.desconto_valor))
         );
     }
+    var taxaE = Math.max(0, Number(orcamento.taxa_entrega) || 0);
+    if (taxaE > 0) {
+        linha("Taxa de entrega: " + formatarMoedaPdf(taxaE));
+    }
     doc.setFontSize(12);
     var vFin = orcamento.valor_final != null ? orcamento.valor_final : vOrig;
     linha("VALOR FINAL: " + formatarMoedaPdf(vFin));

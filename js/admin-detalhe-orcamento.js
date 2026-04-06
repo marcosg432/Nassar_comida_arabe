@@ -1,5 +1,5 @@
 /**
- * Detalhe do orçamento (admin): desconto, degustação, pagamento, WhatsApp, PDF proposta
+ * Detalhe do orçamento (admin): desconto, taxa de entrega, pagamento, WhatsApp, PDF proposta
  */
 (function () {
     var STORAGE_ID_KEY = "nassar_admin_orcamento_id";
@@ -71,8 +71,13 @@
     function atualizarPreviewFinal(orcamento) {
         var tipo = document.getElementById("desconto-tipo").value || null;
         var val = parseFloat(String(document.getElementById("desconto-valor").value).replace(",", ".")) || 0;
+        var txEnt = parseFloat(String(document.getElementById("taxa-entrega").value).replace(",", ".")) || 0;
         var vo = valorOriginalOrcCompat(orcamento);
-        var vf = tipo ? calcularValorFinalComDesconto(vo, tipo, val) : vo;
+        var posDesc = tipo ? calcularValorFinalComDesconto(vo, tipo, val) : vo;
+        var vf = typeof calcularValorFinalComTaxaEntrega === "function"
+            ? calcularValorFinalComTaxaEntrega(posDesc, txEnt)
+            : posDesc + Math.max(0, txEnt);
+        document.getElementById("preview-subtotal-apos-desconto").textContent = formatarMoeda(posDesc);
         document.getElementById("preview-valor-final").textContent = formatarMoeda(vf);
         var dr = tipo ? descontoEquivalenteEmReais(vo, tipo, val) : 0;
         document.getElementById("preview-desconto-reais").textContent = formatarMoeda(dr);
@@ -108,8 +113,13 @@
             var sub = it.subtotal != null ? it.subtotal : (Number(pu) || 0) * (Number(it.quantidade) || 0);
             msg += (it.quantidade || 0) + "x " + (it.nome || "") + " — R$ " + Number(sub).toFixed(2).replace(".", ",") + "\n";
         });
+        var taxa = o.taxa_entrega != null ? Number(o.taxa_entrega) : 0;
+        if (isNaN(taxa)) taxa = 0;
         msg += "\nValor original: R$ " + Number(vo).toFixed(2).replace(".", ",");
         msg += "\nDesconto: R$ " + Number(vd || 0).toFixed(2).replace(".", ",");
+        if (taxa > 0) {
+            msg += "\nTaxa de entrega: R$ " + taxa.toFixed(2).replace(".", ",");
+        }
         msg += "\nValor final: R$ " + Number(vf).toFixed(2).replace(".", ",");
         msg += "\n\nForma de pagamento: " + (formaPagamentoOrc(o) || "-");
         var ent = o.entrada;
@@ -152,9 +162,8 @@
         document.getElementById("desconto-valor").value =
             o.desconto_valor != null && o.desconto_valor !== "" ? String(o.desconto_valor).replace(".", ",") : "";
 
-        document.getElementById("degustacao-data").value = o.degustacao_data || "";
-        document.getElementById("degustacao-hora").value = o.degustacao_hora || "";
-        document.getElementById("degustacao-obs").value = o.degustacao_obs || "";
+        document.getElementById("taxa-entrega").value =
+            o.taxa_entrega != null && o.taxa_entrega !== "" ? String(o.taxa_entrega).replace(".", ",") : "";
 
         var fp = formaPagamentoOrc(o);
         var selFp = document.getElementById("forma-pagamento-adm");
@@ -185,8 +194,10 @@
         var tipo = document.getElementById("desconto-tipo").value || null;
         var valRaw = document.getElementById("desconto-valor").value;
         var val = parseFloat(String(valRaw).replace(",", ".")) || 0;
+        var taxaEnt = Math.max(0, parseFloat(String(document.getElementById("taxa-entrega").value).replace(",", ".")) || 0);
         var vo = valorOriginalOrcCompat(orcamentoAtual);
-        var vf = tipo ? calcularValorFinalComDesconto(vo, tipo, val) : vo;
+        var posDesc = tipo ? calcularValorFinalComDesconto(vo, tipo, val) : vo;
+        var vf = calcularValorFinalComTaxaEntrega(posDesc, taxaEnt);
         var vDesc = tipo ? descontoEquivalenteEmReais(vo, tipo, val) : 0;
 
         var entrada = numeroInput("entrada");
@@ -199,9 +210,7 @@
             valor_final: vf,
             valor_original: vo,
             total: vo,
-            degustacao_data: strInput("degustacao-data") || null,
-            degustacao_hora: strInput("degustacao-hora") || null,
-            degustacao_obs: strInput("degustacao-obs") || null,
+            taxa_entrega: taxaEnt > 0 ? taxaEnt : null,
             forma_pagamento: strInput("forma-pagamento-adm") || null,
             forma_pagamento_ref: strInput("forma-pagamento-adm") || null,
             entrada: entrada,
@@ -248,6 +257,9 @@
         document.getElementById("desconto-valor").addEventListener("input", function () {
             atualizarPreviewFinal(orcamentoAtual);
         });
+        document.getElementById("taxa-entrega").addEventListener("input", function () {
+            atualizarPreviewFinal(orcamentoAtual);
+        });
 
         document.getElementById("btn-salvar").addEventListener("click", function () {
             var tipo = document.getElementById("desconto-tipo").value || null;
@@ -291,16 +303,11 @@
                 alert("Ajuste o desconto ou deixe sem desconto antes de gerar o contrato.");
                 return;
             }
-            var vo = valorOriginalOrcCompat(orcamentoAtual);
-            var vf = tipoC ? calcularValorFinalComDesconto(vo, tipoC, valC) : vo;
-            var stContrato = CONFIG.STATUS_ORCAMENTO && CONFIG.STATUS_ORCAMENTO.EM_PRODUCAO;
             var extra = patchComumExtra();
+            var vf = extra.valor_final;
+            var stContrato = CONFIG.STATUS_ORCAMENTO && CONFIG.STATUS_ORCAMENTO.EM_PRODUCAO;
 
             atualizarOrcamentoParcial(oid, Object.assign(extra, {
-                desconto_tipo: tipoC || null,
-                desconto_valor: tipoC ? valC : null,
-                valor_final: vf,
-                valor_desconto: tipoC ? descontoEquivalenteEmReais(vo, tipoC, valC) : 0,
                 contrato: {
                     valor_final: vf,
                     data_contrato: new Date().toISOString(),

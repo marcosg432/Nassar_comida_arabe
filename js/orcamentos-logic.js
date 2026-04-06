@@ -23,3 +23,10 @@ function descontoEquivalenteEmReais(valorOriginal, descontoTipo, descontoValor) 
     const vf = calcularValorFinalComDesconto(vo, descontoTipo, descontoValor);
     return Math.round((vo - vf) * 100) / 100;
 }
+
+/** Valor após desconto + taxa de entrega (ambos não negativos). */
+function calcularValorFinalComTaxaEntrega(valorAposDesconto, taxaEntrega) {
+    const base = Math.max(0, Number(valorAposDesconto) || 0);
+    const tx = Math.max(0, Number(taxaEntrega) || 0);
+    return Math.round((base + tx) * 100) / 100;
+}
