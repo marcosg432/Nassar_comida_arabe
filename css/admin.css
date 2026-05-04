@@ -33,6 +33,28 @@
     display: block;
 }
 
+.admin-logo-img.logo-wordmark,
+.admin-login-logo.logo-wordmark {
+    object-fit: unset;
+    font-family: var(--font-sans, "Outfit", system-ui, sans-serif);
+    font-weight: 700;
+    color: #3d2c24;
+    line-height: 1.2;
+}
+
+.admin-logo-img.logo-wordmark {
+    height: auto;
+    min-height: 2.75rem;
+    font-size: clamp(1.1rem, 2.8vw, 1.5rem);
+    max-width: min(320px, 92vw);
+}
+
+.admin-login-logo.logo-wordmark {
+    font-size: clamp(1.5rem, 4.5vw, 2rem);
+    text-align: center;
+    display: block;
+}
+
 .admin-bar-brand > a:first-child {
     line-height: 0;
     background: rgba(255, 255, 255, 0.96);

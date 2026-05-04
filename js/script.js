@@ -171,7 +171,8 @@ function initSmoothScroll() {
  */
 function initScrollAnimations() {
     const animatedElements = document.querySelectorAll(
-        '.section-head, .categoria-card, .galeria-item, .avaliacao-card, .produto-card, .produto-card-home'
+        '.section-head, .categoria-card, .galeria-item, .avaliacao-card, .produto-card, .produto-card-home, ' +
+        '.home-step-card, .home-pillar-card, .home-quote-card, .home-visit-row, .home-pay-badge, .home-final-cta-inner'
     );
 
     const observerOptions = {
@@ -204,7 +205,13 @@ function initScrollAnimations() {
         .galeria-item.visible,
         .avaliacao-card.visible,
         .produto-card.visible,
-        .produto-card-home.visible {
+        .produto-card-home.visible,
+        .home-step-card.visible,
+        .home-pillar-card.visible,
+        .home-quote-card.visible,
+        .home-visit-row.visible,
+        .home-pay-badge.visible,
+        .home-final-cta-inner.visible {
             opacity: 1 !important;
             transform: translateY(0) !important;
         }

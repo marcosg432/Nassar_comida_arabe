@@ -6,7 +6,7 @@ const CONFIG = {
     /** Número do WhatsApp com DDD (ex: 5547999999999) */
     telefoneWhatsApp: "5547999999999",
     /** Nome da empresa para identificação e chave do localStorage */
-    nomeEmpresa: "Nassar",
+    nomeEmpresa: "Doceria Premium",
     /** Senha da área administrativa (troque em produção) */
     senhaAdmin: "senna2025",
     /** Chaves de status — fluxo de orçamentos para eventos (painel admin) */
@@ -33,5 +33,5 @@ const CONFIG = {
      * Logo para PDF (opcional): caminho a partir da raiz do site, ex: "assets/logo.png"
      * Deixe vazio para não carregar imagem (usa só o nome da empresa).
      */
-    logoOrcamentoRelPath: "assets/img/logo-nassar.png"
+    logoOrcamentoRelPath: ""
 };

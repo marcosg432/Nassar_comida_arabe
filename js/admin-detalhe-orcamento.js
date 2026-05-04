@@ -2,7 +2,7 @@
  * Detalhe do orçamento (admin): desconto, taxa de entrega, pagamento, WhatsApp, PDF proposta
  */
 (function () {
-    var STORAGE_ID_KEY = "nassar_admin_orcamento_id";
+    var STORAGE_ID_KEY = "doceria_admin_orcamento_id";
 
     function getQueryId() {
         var params = new URLSearchParams(window.location.search);

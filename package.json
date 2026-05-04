@@ -1,7 +1,7 @@
 {
   "name": "nassar-comida-arabe",
   "private": true,
-  "description": "Cardápio digital Nassar — site estático servido com serve + PM2",
+  "description": "Cardápio digital Doceria Premium — site estático servido com serve + PM2",
   "scripts": {
     "start": "serve . -l 3009",
     "serve": "serve . -l 3009"

@@ -2,7 +2,7 @@
 module.exports = {
   apps: [
     {
-      name: "nassar-cardapio",
+      name: "doceria-premium-cardapio",
       script: "node_modules/serve/build/main.js",
       args: ". -l 3009",
       cwd: __dirname,

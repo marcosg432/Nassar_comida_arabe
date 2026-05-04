@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orçamentos | Admin — Nassar</title>
-    <link rel="icon" href="../assets/img/logo-nassar.png" type="image/png">
+    <title>Orçamentos | Admin — Doceria Premium</title>
     <link rel="stylesheet" href="../css/admin.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,9 +11,9 @@
 </head>
 <body class="admin-body">
     <div id="admin-login" class="admin-card admin-login-box">
-        <img src="../assets/img/logo-nassar.png" alt="Nassar Comida Árabe" class="admin-login-logo" width="400" height="120" decoding="async">
+        <span class="admin-login-logo logo-wordmark" role="img" aria-label="Doceria Premium">Doceria Premium</span>
         <h1>Área administrativa</h1>
-        <p style="font-size:0.9rem;opacity:0.85">Acesso restrito à equipe Nassar.</p>
+        <p style="font-size:0.9rem;opacity:0.85">Acesso restrito à equipe.</p>
         <label for="admin-senha">Senha</label>
         <input type="password" id="admin-senha" placeholder="Senha" autocomplete="current-password">
         <button type="button" class="admin-btn" id="btn-entrar" style="width:100%">Entrar</button>
@@ -25,7 +24,7 @@
     <div id="admin-main" hidden>
         <header class="admin-bar">
             <span class="admin-bar-brand">
-                <a href="/index.html" title="Ir ao site"><img src="../assets/img/logo-nassar.png" alt="" class="admin-logo-img" width="280" height="84" decoding="async"></a>
+                <a href="/index.html" title="Ir ao site"><span class="admin-logo-img logo-wordmark">Doceria Premium</span></a>
                 <span id="admin-titulo-empresa"><strong>Orçamentos</strong></span>
             </span>
             <span>
@@ -148,7 +147,7 @@
                 var rid = a.getAttribute('data-orc-id');
                 if (rid) {
                     try {
-                        sessionStorage.setItem('nassar_admin_orcamento_id', rid);
+                        sessionStorage.setItem('doceria_admin_orcamento_id', rid);
                     } catch (err) {}
                 }
             });
